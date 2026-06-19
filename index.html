@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Scanner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e272e;
+            color: #ecf0f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #2c3e50;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+        input[type="text"] {
+            width: 90%;
+            padding: 12px;
+            margin: 20px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #0fb8ad;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover { background-color: #0c968c; }
+        .result-box {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #34495e;
+            text-align: left;
+        }
+        .status {
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; color: #d2dae2; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 style="color: #00d8d6;">Phishing URL Scanner</h2>
+    <p>Analyze links for potential security threats.</p>
+
+    <form method="POST">
+        <input type="text" name="url_input" placeholder="Paste the suspicious URL here..." required>
+        <br>
+        <button type="submit">Scan URL</button>
+    </form>
+
+    {% if result %}
+    <div class="result-box" style="border-left: 5px solid {{ result.color }};">
+        <div class="status" style="color: {{ result.color }};">
+            {{ result.status }}
+        </div>
+        <strong>Scanned:</strong> {{ result.url }}
+        
+        {% if result.flags %}
+            <h4 style="margin-top: 15px;">Red Flags Detected:</h4>
+            <ul>
+                {% for flag in result.flags %}
+                    <li>🚨 {{ flag }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p style="margin-top: 15px; color: #2ecc71;">✅ No obvious rule-based red flags detected.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
